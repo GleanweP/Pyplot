@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -46,6 +47,15 @@ def plot_graph():
     canvas = FigureCanvasTkAgg(fig, master=new_window)
     canvas.draw()
     canvas.get_tk_widget().pack()
+
+    def save_image():
+        file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+        if file_path:
+            fig.savefig(file_path, dpi=100)
+            print(f"Image saved as {file_path}")
+
+    save_button = tk.Button(new_window, text="Save as Image", command=save_image)
+    save_button.pack()
 
 
 def update_window_size():

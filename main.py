@@ -13,8 +13,8 @@ def plot_graph():
     fig, ax1 = plt.subplots(figsize=(5, 4), dpi=100)
 
     for i in range(len(x_values)):
-        x_data = [float(x) for x in x_values[i].split(',')]
-        y1_data = [float(y) for y in y1_values[i].split(',')]
+        x_data = [float(xi) for xi in x_values[i].split(',')]
+        y1_data = [float(yi) for yi in y1_values[i].split(',')]
         legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i]
 
         ax1.plot(x_data, y1_data, label=f'{legend_label} - Y1', color='blue')
@@ -27,8 +27,8 @@ def plot_graph():
     if var.get() == 1:
         ax2 = ax1.twinx()
         for i in range(len(x_values)):
-            x_data = [float(x) for x in x_values[i].split(',')]
-            y2_data = [float(y) for y in y2_values[i].split(',')]
+            x_data = [float(xi) for xi in x_values[i].split(',')]
+            y2_data = [float(yi) for yi in y2_values[i].split(',')]
             legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i]
 
             ax2.plot(x_data, y2_data, label=f'{legend_label} - Y2', color='red')
@@ -60,11 +60,11 @@ def plot_graph():
 
 def update_window_size():
     window.update()
-    width = window.winfo_reqwidth()
-    height = window.winfo_reqheight()
-    x = (window.winfo_screenwidth() // 2) - (width // 2)
-    y = (window.winfo_screenheight() // 2) - (height // 2)
-    window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+    rwidth = window.winfo_reqwidth()
+    rheight = window.winfo_reqheight()
+    xs = (window.winfo_screenwidth() // 2) - (rwidth // 2)
+    ys = (window.winfo_screenheight() // 2) - (rheight // 2)
+    window.geometry('{}x{}+{}+{}'.format(rwidth, rheight, xs, ys))
 
 
 def on_check():

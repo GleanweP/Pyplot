@@ -169,7 +169,6 @@ info_window_visible = False
 
 extend_button = tk.Button(window, text="Info", command=toggle_info_panel)
 extend_button.grid(row=9, column=1, sticky="SE")
-
 plot_button = tk.Button(window, text='Plot', command=plot_graph)
 plot_button.grid(row=9, columnspan=2)
 

@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import random
 
 
 def plot_graph():

@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import random
 
 
 def plot_graph():
@@ -12,15 +14,17 @@ def plot_graph():
 
     fig, ax1 = plt.subplots(figsize=(5, 4), dpi=100)
 
+    colors = ['blue', 'red', 'green', 'purple', 'cyan', 'magenta', 'yellow', 'black', 'orange']
+
     for i in range(len(x_values)):
         x_data = [float(xi) for xi in x_values[i].split(',')]
         y1_data = [float(yi) for yi in y1_values[i].split(',')]
         legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i]
-
-        ax1.plot(x_data, y1_data, label=f'{legend_label} - Y1', color='blue')
+        color = colors[i % len(colors)]
+        ax1.plot(x_data, y1_data, label=f'{legend_label}', color=color)
 
     ax1.set_xlabel(entry_xlabel.get())
-    ax1.set_ylabel(entry_ylabel1.get(), color='blue')
+    ax1.set_ylabel(entry_ylabel1.get())
     ax1.set_title(entry_title.get())
     lines1, labels1 = ax1.get_legend_handles_labels()
 
@@ -29,11 +33,11 @@ def plot_graph():
         for i in range(len(x_values)):
             x_data = [float(xi) for xi in x_values[i].split(',')]
             y2_data = [float(yi) for yi in y2_values[i].split(',')]
-            legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i]
+            legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i+1]
+            color = colors[-i-1 % len(colors)]
+            ax2.plot(x_data, y2_data, label=f'{legend_label}', color=color)
 
-            ax2.plot(x_data, y2_data, label=f'{legend_label} - Y2', color='red')
-
-        ax2.set_ylabel(entry_ylabel2.get(), color='red')
+        ax2.set_ylabel(entry_ylabel2.get())
         lines2, labels2 = ax2.get_legend_handles_labels()
         lines = lines1 + lines2
         labels = labels1 + labels2
@@ -64,7 +68,10 @@ def update_window_size():
     rheight = window.winfo_reqheight()
     xs = (window.winfo_screenwidth() // 2) - (rwidth // 2)
     ys = (window.winfo_screenheight() // 2) - (rheight // 2)
+    slave_x = xs + rwidth
+    slave_y = ys
     window.geometry('{}x{}+{}+{}'.format(rwidth, rheight, xs, ys))
+    info_window.geometry(f"{250}x{rheight}+{slave_x}+{slave_y}")
 
 
 def on_check():
@@ -73,11 +80,13 @@ def on_check():
         label_ylabel2.grid_remove()
         label_y2.grid_remove()
         entry_y2.grid_remove()
+        label_y2info.grid_remove()
     else:
         ylabel2_entry.grid()
         label_ylabel2.grid()
         label_y2.grid()
         entry_y2.grid()
+        label_y2info.grid()
     update_window_size()
 
 
@@ -89,7 +98,7 @@ def toggle_info_panel():
         master_width = window.winfo_width()
         master_height = window.winfo_height()
 
-        slave_width = 200
+        slave_width = 250
         slave_height = master_height
 
         slave_x = master_x + master_width
@@ -108,17 +117,17 @@ def toggle_info_panel():
 window = tk.Tk()
 window.title('PyPlotter')
 
-label_x = tk.Label(window, text='Enter X values (semicolon-separated for multiple plots):')
+label_x = tk.Label(window, text='Enter X values (comma to separate each values):')
 label_x.grid(row=0, column=0)
 entry_x = tk.Entry(window)
 entry_x.grid(row=0, column=1)
 
-label_y1 = tk.Label(window, text='Enter Y1 values (semicolon-separated for multiple plots):')
+label_y1 = tk.Label(window, text='Enter Y1 values (comma to separate each values):')
 label_y1.grid(row=1, column=0)
 entry_y1 = tk.Entry(window)
 entry_y1.grid(row=1, column=1)
 
-label_y2 = tk.Label(window, text='Enter Y2 values (semicolon-separated for multiple plots):')
+label_y2 = tk.Label(window, text='Enter Y2 values (comma to separate each values):')
 label_y2.grid(row=2, column=0)
 entry_y2 = tk.Entry(window)
 entry_y2.grid(row=2, column=1)
@@ -161,7 +170,22 @@ check_double_yaxis.grid(row=8, columnspan=2)
 
 info_window = tk.Toplevel(window)
 info_window.title('')
-info_window.geometry("200x200")  # Set initial size
+
+label_xinfo = tk.Label(info_window, text='  semicolon-separated for multiple plots')
+label_xinfo.grid(row=0, column=0)
+
+label_yinfo = tk.Label(info_window, text='  semicolon-separated for multiple plots')
+label_yinfo.grid(row=1, column=0)
+
+label_y2info = tk.Label(info_window, text='  semicolon-separated for multiple plots')
+label_y2info.grid(row=2, column=0)
+label_y2info.grid_remove()
+
+info_width = info_window.winfo_width()
+info_height = info_window.winfo_height()
+x_info = (window.winfo_screenwidth() // 2) - (info_width // 2)
+y_info = (window.winfo_screenheight() // 2) - (info_height // 2)
+info_window.geometry('{}x{}+{}+{}'.format(info_width, info_height, x_info, y_info))  # Set initial size
 info_window.withdraw()  # Hide the info panel initially
 info_window.overrideredirect(True)
 

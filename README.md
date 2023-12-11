@@ -6,6 +6,10 @@ This is a Python application that allows you to create customized plots with dou
 - Python (3.x recommended)
 - Matplotlib
 - Tkinter (usually included with Python installations)
+if you have an error that display "Python may not be configured for Tk". Try to install it with your package manager for arch:
+```bash
+sudo pacman -S tk
+```
 
 ## Installation
 

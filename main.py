@@ -19,11 +19,14 @@ def plot_graph():
         y1_data = [float(yi) for yi in y1_values[i].split(',')]
         legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i]
         color = colors[i % len(colors)]
-        ax1.plot(x_data, y1_data, label=f'{legend_label}', color=color)
+        #ax1.plot(x_data, y1_data, label=f'{legend_label}', color=color)
+        ax1.scatter(x_data, y1_data, label=f'{legend_label}', color=color)
+
 
     ax1.set_xlabel(entry_xlabel.get())
     ax1.set_ylabel(entry_ylabel1.get())
     ax1.set_title(entry_title.get())
+    ax1.set_ylim(bottom=0, top=100)
     lines1, labels1 = ax1.get_legend_handles_labels()
 
     if var.get() == 1:
@@ -39,9 +42,9 @@ def plot_graph():
         lines2, labels2 = ax2.get_legend_handles_labels()
         lines = lines1 + lines2
         labels = labels1 + labels2
-        ax1.legend(lines, labels, loc='upper right')
+        ax1.legend(lines, labels, loc='lower right')
     else:
-        ax1.legend(lines1, labels1, loc='upper right')
+        ax1.legend(lines1, labels1, loc='lower right')
 
     new_window = tk.Toplevel(window)
     new_window.title('Matplotlib Plot')

@@ -19,14 +19,15 @@ def plot_graph():
         y1_data = [float(yi) for yi in y1_values[i].split(',')]
         legend_label = f'Data {i + 1}' if i >= len(legend_entries) else legend_entries[i]
         color = colors[i % len(colors)]
-        #ax1.plot(x_data, y1_data, label=f'{legend_label}', color=color)
-        ax1.scatter(x_data, y1_data, label=f'{legend_label}', color=color)
-
+        if var_points.get():
+            ax1.scatter(x_data, y1_data, label=f'{legend_label}', color=color)
+        else:
+            ax1.plot(x_data, y1_data, label=f'{legend_label}', color=color)
 
     ax1.set_xlabel(entry_xlabel.get())
     ax1.set_ylabel(entry_ylabel1.get())
     ax1.set_title(entry_title.get())
-    ax1.set_ylim(bottom=0, top=100)
+    ax1.set_ylim(bottom=0)
     lines1, labels1 = ax1.get_legend_handles_labels()
 
     if var.get() == 1:
@@ -193,9 +194,14 @@ info_window.overrideredirect(True)
 info_window_visible = False
 
 extend_button = tk.Button(window, text="Info", command=toggle_info_panel)
-extend_button.grid(row=9, column=1, sticky="SE")
+extend_button.grid(row=10, column=1, sticky="SE")
 plot_button = tk.Button(window, text='Plot', command=plot_graph)
-plot_button.grid(row=9, columnspan=2)
+plot_button.grid(row=10, columnspan=2)
+
+var_points = tk.IntVar()
+var_points.set(0)  # Default: Lines
+points_checkbox = tk.Checkbutton(window, text="Plot Points", variable=var_points)
+points_checkbox.grid(row=9, columnspan=2)
 
 window.update_idletasks()
 width = window.winfo_width()
